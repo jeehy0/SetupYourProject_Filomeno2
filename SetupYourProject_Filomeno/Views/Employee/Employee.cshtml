@@ -1,0 +1,128 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var FirstName = "Cyril Angelo";
+    var LastName = "Filomeno";
+    DateTime Birthday = new DateTime(2002, 10, 08);
+    DateTime dateTimeToday = DateTime.UtcNow;
+    TimeSpan difference = dateTimeToday.Subtract(Birthday);
+    var firstDay = new DateTime(1, 1, 1);
+    bool IsTenured = true;
+    decimal SalaryPerHour = 500;
+    var Email = "cyrilangelo.filomeno.cics@ust.edu.ph";
+
+    <h4> A. Sample output: </h4>
+
+    int totalYears = (firstDay + difference).Year - 1;
+
+    <body>
+    <p>I'm @FirstName @LastName and I'm @totalYears yrs. old</p>
+    </body>
+
+    <h4> B. Sample output: </h4>
+
+    string[] emailAddress = Email.Split('@');
+    var Username = emailAddress[0];
+    var Domain = emailAddress[1];
+
+    <body>
+    <p>Email: @Email</p>
+    <p>Domain: @Domain</p>
+    <p>Username: @Username</p>
+    </body>
+
+    <h4> C. Sample output: </h4>
+
+    decimal SalaryPerDay = SalaryPerHour * 8;
+    decimal SalaryPerMonth = SalaryPerDay * 30;
+
+    if (IsTenured == true)
+    {
+        SalaryPerMonth += 500;
+        <p>Status: Tenured</p>
+    }
+    else
+    {
+        <p>Status: Probationary</p>
+    }
+
+    <body>
+    <p>Name: @FirstName @LastName</p>
+    <p>Email: @Email</p>
+    <p>Daily Salary: @SalaryPerDay</p>
+    <p>Monthly Salary: @SalaryPerMonth</p>
+    </body>
+
+    int PrelimGrade = 92;
+    int FinalGrade = 90;
+    decimal SemestralGrade = (PrelimGrade + FinalGrade) / 2.0M;
+    var TransmutedGrade = "";
+
+    if (SemestralGrade >= 96)
+    {
+        TransmutedGrade = "1.00";
+    }
+    else if (SemestralGrade >= 94)
+    {
+        TransmutedGrade = "1.25";
+    }
+    else if (SemestralGrade >= 92)
+    {
+        TransmutedGrade = "1.50";
+    }
+    else if (SemestralGrade >= 89)
+    {
+        TransmutedGrade = "1.75";
+    }
+    else if (SemestralGrade >= 87)
+    {
+        TransmutedGrade = "2.00";
+    }
+    else if (SemestralGrade >= 84)
+    {
+        TransmutedGrade = "2.25";
+    }
+    else if (SemestralGrade >= 82)
+    {
+        TransmutedGrade = "2.50";
+    }
+    else if (SemestralGrade >= 79)
+    {
+        TransmutedGrade = "2.75";
+    }
+    else if (SemestralGrade >= 75)
+    {
+        TransmutedGrade = "3.00";
+    }
+    else
+    {
+        TransmutedGrade = "5.00";
+    }
+}
+
+    <h4>Student Grade:</h4>
+    <body>
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td>@FirstName @LastName</td>
+        </tr>
+        <tr>
+            <td>Prelim:</td>
+            <td>@PrelimGrade</td>
+        </tr>
+        <tr>
+            <td>Final:</td>
+            <td>@FinalGrade</td>
+        </tr>
+        <tr>
+            <td>Semestral Grade:</td>
+            <td>@SemestralGrade.ToString("N2")</td>
+        </tr>
+        <tr>
+            <td>Transmuted Grade:</td>
+            <td>@TransmutedGrade</td>
+        </tr>
+    </table>
+    </body>

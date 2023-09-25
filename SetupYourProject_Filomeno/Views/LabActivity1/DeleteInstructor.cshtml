@@ -1,31 +1,31 @@
 ﻿@model Instructor;
 
-<p>Edit Instructor</p>
+<p>Are you sure you want to delete this?</p>
 
-<form asp-action="EditInstructor" method="post">
+<form asp-action="DeleteInstructor" method="post">
     <div class="form-group">
         <label asp-for="Id">ID</label>
-        <input asp-for="Id" class="form-control" />
+        <input asp-for="Id" class="form-control" readonly />
     </div>
 
     <div class="form-group">
         <label asp-for="FirstName">First Name</label>
-        <input asp-for="FirstName" class="form-control" />
+        <input asp-for="FirstName" class="form-control" readonly />
     </div>
 
     <div class="form-group">
         <label asp-for="LastName">Last Name</label>
-        <input asp-for="LastName" class="form-control" />
+        <input asp-for="LastName" class="form-control" readonly />
     </div>
 
     <div class="form-group">
         <label asp-for="Rank">Rank</label>
-        <select asp-for="Rank" asp-items="Html.GetEnumSelectList(typeof(Rank))" class="form-control"></select>
+        <input asp-for="Rank" class="form-control" readonly />
     </div>
 
     <div class="form-group">
         <label asp-for="IsTenured">Status</label>
-        <select asp-for="IsTenured" class="form-control">
+        <select asp-for="IsTenured" class="form-control" readonly>
             <option value="true">Permanent</option>
             <option value="false">Probationary</option>
         </select>
@@ -33,13 +33,13 @@
 
     <div class="form-group">
         <label asp-for="HiringDate">HiringDate</label>
-        <input asp-for="HiringDate" class="form-control" />
+        <input asp-for="HiringDate" class="form-control" readonly/>
     </div>
 
-    <button type="submit" class="btn btn-primary">Update</button>
-    <div class="form-group">
-        <button type="button" class="btn btn-secondary" onclick="history.back();">Cancel</button>
-    </div>
+    <br />
+
+    <p>Are you sure you want to delete?</p>
+    <button type="submit" class="btn btn-danger">Yes</button>
+    <button type="submit" class="btn btn-primary">No</button>
 </form>
-
 

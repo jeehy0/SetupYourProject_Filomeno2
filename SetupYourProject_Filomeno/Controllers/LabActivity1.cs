@@ -1,53 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SetupYourProject_Filomeno.Models;
+using SetupYourProject_Filomeno.Services;
 
 namespace SetupYourProject_Filomeno.Controllers
 {
     public class LabActivity1 : Controller
     {
-        List<Student> StudentList = new List<Student>()
-            {
-                new Student()
-                {
-                    Id = 1, FirstName = "Cyril", LastName = "Filomeno", Course = Course.BSIT, AdmissionDate = DateTime.Parse("2022-08-26"), GPA = 1.5, Email = "cyrilangelo.filomeno.cics@ust.edu.ph"
-                },
-                new Student()
-                    {
-                    Id = 2, FirstName = "Caster", LastName = "Lapuz", Course = Course.BSIS, AdmissionDate = DateTime.Parse("2022-08-27"), GPA = 1.6, Email = "castertroi.lapuz.cics@ust.edu.ph"
-                },
-                new Student()
-                {
-                    Id = 3, FirstName = "Rico", LastName = "Nieto", Course = Course.BSIS, AdmissionDate = DateTime.Parse("2022-08-28"), GPA = 1.8, Email = "rico.nieto.cics@ust.edu.ph"
-                }
-            };
+            private readonly IMyFakeDataService _fakeData;
 
-        List<Instructor> InstructorList = new List<Instructor>()
-            {
-                new Instructor()
-                {
-                    Id = 1, FirstName = "Cyril", LastName = "Filomeno", IsTenured = true, Rank = Rank.Instructor, HiringDate = DateTime.Parse("2022-08-27")
-                },
-                new Models.Instructor()
-                {
-                    Id = 2, FirstName = "Caster", LastName = "Lapuz", IsTenured = false, Rank = Rank.AssistantProfessor, HiringDate = DateTime.Parse("2022-08-28")
-                },
-                new Models.Instructor()
-                {
-                    Id = 3, FirstName = "Rico", LastName = "Nieto", IsTenured = true, Rank = Rank.AssociateProfessor, HiringDate = DateTime.Parse("2022-08-29")
-                }
-            };
+        public LabActivity1(IMyFakeDataService fakeData)
+        {
+            _fakeData = fakeData;
+        }
 
         public IActionResult Index()
         {
-            return View(InstructorList);
+            return View(_fakeData.InstructorList);
         }
         public IActionResult Student()
         {
-            return View(StudentList);
+            return View(_fakeData.StudentList);
         }
         public IActionResult ShowDetails(int id)
         {
-            Instructor? instructor = InstructorList.FirstOrDefault(Instructor => Instructor.Id == id);
+            Instructor? instructor = _fakeData.InstructorList.FirstOrDefault(Instructor => Instructor.Id == id);
 
             if (instructor != null)
             {
@@ -55,10 +31,9 @@ namespace SetupYourProject_Filomeno.Controllers
             }
             return NotFound();
         }
-
         public IActionResult ShowDetail(int id)
         {
-            Student? student = StudentList.FirstOrDefault(Student => Student.Id == id);
+            Student? student = _fakeData.StudentList.FirstOrDefault(Student => Student.Id == id);
 
             if (student != null)
             {
@@ -76,14 +51,14 @@ namespace SetupYourProject_Filomeno.Controllers
         [HttpPost]
         public IActionResult AddInstructor(Instructor newInstructor)
         {
-            InstructorList.Add(newInstructor);
-            return View("Index", InstructorList);
+            _fakeData.InstructorList.Add(newInstructor);
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult EditInstructor(int id)
         {
-            Instructor? instructor = InstructorList.FirstOrDefault(Instructor => Instructor.Id == id);
+            Instructor? instructor = _fakeData.InstructorList.FirstOrDefault(Instructor => Instructor.Id == id);
             if (instructor != null)
             {
                 return View(instructor);
@@ -97,7 +72,7 @@ namespace SetupYourProject_Filomeno.Controllers
         [HttpPost]
         public IActionResult EditInstructor(Instructor InstructorEdit)
         {
-            Instructor? instructor = InstructorList.FirstOrDefault(Instructor => Instructor.Id == InstructorEdit.Id);
+            Instructor? instructor = _fakeData.InstructorList.FirstOrDefault(Instructor => Instructor.Id == InstructorEdit.Id);
 
             if (instructor != null)
             {
@@ -108,8 +83,97 @@ namespace SetupYourProject_Filomeno.Controllers
                 instructor.HiringDate = InstructorEdit.HiringDate;
                 instructor.Rank = InstructorEdit.Rank;
             }
-            return View("Index", InstructorList);
+            return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public IActionResult DeleteInstructor(int id)
+        {
+            Instructor? instructor = _fakeData.InstructorList.FirstOrDefault(Instructor => Instructor.Id == id);
+            if (instructor != null)
+            {
+                return View(instructor);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult DeleteInstructor(Instructor delInstructor)
+        {
+            Instructor? instructor = _fakeData.InstructorList.FirstOrDefault(Instructor => Instructor.Id == delInstructor.Id);
+            _fakeData.InstructorList.Remove(instructor);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult AddStudent()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddStudent(Student newStudent)
+        {
+            _fakeData.StudentList.Add(newStudent);
+            return RedirectToAction("Student");
+        }
+
+        [HttpGet]
+        public IActionResult EditStudent(int id)
+        {
+            Student? student = _fakeData.StudentList.FirstOrDefault(Student => Student.Id == id);
+            if (student != null)
+            {
+                return View(student);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult EditStudent(Student StudentEdit)
+        {
+            Student? student = _fakeData.StudentList.FirstOrDefault(Student => Student.Id == StudentEdit.Id);
+
+            if (student != null)
+            {
+                student.Id = StudentEdit.Id;
+                student.FirstName = StudentEdit.FirstName;
+                student.LastName = StudentEdit.LastName;
+                student.AdmissionDate = StudentEdit.AdmissionDate;
+                student.Email = StudentEdit.Email;
+                student.GPA = StudentEdit.GPA;
+            }
+            return RedirectToAction("Student");
+        }
+
+        [HttpGet]
+        public IActionResult DeleteStudent(int id)
+        {
+            Student? student = _fakeData.StudentList.FirstOrDefault(Instructor => Instructor.Id == id);
+            if (student != null)
+            {
+                return View(student);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult DeleteStudent(Student delStudent)
+        {
+            Student? student = _fakeData.StudentList.FirstOrDefault(Student => Student.Id == delStudent.Id);
+            _fakeData.StudentList.Remove(student);
+            return RedirectToAction("Student");
+        }
+
     }
 }
 

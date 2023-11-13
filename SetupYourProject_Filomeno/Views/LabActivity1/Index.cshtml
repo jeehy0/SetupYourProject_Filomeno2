@@ -6,11 +6,10 @@
 
 <table class="table table-dark">
     <tr>
-        <th colspan="8">Instructors</th>
+        <th colspan="7">Instructors</th>
     </tr>
 
     <tr>
-        <td>Id</td>
         <td>Name</td>
         <td>Status</td>
         <td>Rank</td>
@@ -23,7 +22,6 @@
     @foreach (var instructor in Model)
     {
         <tr>
-            <td>@instructor.Id</td>
             <td>@instructor.FirstName @instructor.LastName</td>
             <td>@(instructor.IsTenured ? "Permanent" : "Probationary")</td>
             <td>@instructor.Rank</td>
@@ -35,4 +33,4 @@
     }
 </table>
 
-<a asp-action="AddStudent" class="btn btn-primary">Add</a>
+<a asp-action="AddInstructor" class="btn btn-primary">Add</a>

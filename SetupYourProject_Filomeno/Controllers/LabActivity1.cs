@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using SetupYourProject_Filomeno.Data;
 using SetupYourProject_Filomeno.Models;
 using SetupYourProject_Filomeno.Services;
 
@@ -6,24 +8,24 @@ namespace SetupYourProject_Filomeno.Controllers
 {
     public class LabActivity1 : Controller
     {
-            private readonly IMyFakeDataService _fakeData;
+            private readonly AppDbContext _dbContext;
 
-        public LabActivity1(IMyFakeDataService fakeData)
+        public LabActivity1(AppDbContext dbContext)
         {
-            _fakeData = fakeData;
+            _dbContext = dbContext;
         }
 
         public IActionResult Index()
         {
-            return View(_fakeData.InstructorList);
+            return View(_dbContext.Instructors);
         }
         public IActionResult Student()
         {
-            return View(_fakeData.StudentList);
+            return View(_dbContext.Students);
         }
         public IActionResult ShowDetails(int id)
         {
-            Instructor? instructor = _fakeData.InstructorList.FirstOrDefault(Instructor => Instructor.Id == id);
+            Instructor? instructor = _dbContext.Instructors.FirstOrDefault(Instructor => Instructor.Id == id);
 
             if (instructor != null)
             {
@@ -33,7 +35,7 @@ namespace SetupYourProject_Filomeno.Controllers
         }
         public IActionResult ShowDetail(int id)
         {
-            Student? student = _fakeData.StudentList.FirstOrDefault(Student => Student.Id == id);
+            Student? student = _dbContext.Students.FirstOrDefault(Student => Student.Id == id);
 
             if (student != null)
             {
@@ -51,14 +53,19 @@ namespace SetupYourProject_Filomeno.Controllers
         [HttpPost]
         public IActionResult AddInstructor(Instructor newInstructor)
         {
-            _fakeData.InstructorList.Add(newInstructor);
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            _dbContext.Instructors.Add(newInstructor);
+            _dbContext.SaveChanges();
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult EditInstructor(int id)
         {
-            Instructor? instructor = _fakeData.InstructorList.FirstOrDefault(Instructor => Instructor.Id == id);
+            Instructor? instructor = _dbContext.Instructors.FirstOrDefault(Instructor => Instructor.Id == id);
             if (instructor != null)
             {
                 return View(instructor);
@@ -72,7 +79,7 @@ namespace SetupYourProject_Filomeno.Controllers
         [HttpPost]
         public IActionResult EditInstructor(Instructor InstructorEdit)
         {
-            Instructor? instructor = _fakeData.InstructorList.FirstOrDefault(Instructor => Instructor.Id == InstructorEdit.Id);
+            Instructor? instructor = _dbContext.Instructors.FirstOrDefault(Instructor => Instructor.Id == InstructorEdit.Id);
 
             if (instructor != null)
             {
@@ -83,13 +90,14 @@ namespace SetupYourProject_Filomeno.Controllers
                 instructor.HiringDate = InstructorEdit.HiringDate;
                 instructor.Rank = InstructorEdit.Rank;
             }
+            _dbContext.SaveChanges();
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult DeleteInstructor(int id)
         {
-            Instructor? instructor = _fakeData.InstructorList.FirstOrDefault(Instructor => Instructor.Id == id);
+            Instructor? instructor = _dbContext.Instructors.FirstOrDefault(Instructor => Instructor.Id == id);
             if (instructor != null)
             {
                 return View(instructor);
@@ -103,8 +111,9 @@ namespace SetupYourProject_Filomeno.Controllers
         [HttpPost]
         public IActionResult DeleteInstructor(Instructor delInstructor)
         {
-            Instructor? instructor = _fakeData.InstructorList.FirstOrDefault(Instructor => Instructor.Id == delInstructor.Id);
-            _fakeData.InstructorList.Remove(instructor);
+            Instructor? instructor = _dbContext.Instructors.FirstOrDefault(Instructor => Instructor.Id == delInstructor.Id);
+            _dbContext.Instructors.Remove(instructor);
+            _dbContext.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -117,14 +126,19 @@ namespace SetupYourProject_Filomeno.Controllers
         [HttpPost]
         public IActionResult AddStudent(Student newStudent)
         {
-            _fakeData.StudentList.Add(newStudent);
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            _dbContext.Students.Add(newStudent);
+            _dbContext.SaveChanges();
             return RedirectToAction("Student");
         }
 
         [HttpGet]
         public IActionResult EditStudent(int id)
         {
-            Student? student = _fakeData.StudentList.FirstOrDefault(Student => Student.Id == id);
+            Student? student = _dbContext.Students.FirstOrDefault(Student => Student.Id == id);
             if (student != null)
             {
                 return View(student);
@@ -138,7 +152,7 @@ namespace SetupYourProject_Filomeno.Controllers
         [HttpPost]
         public IActionResult EditStudent(Student StudentEdit)
         {
-            Student? student = _fakeData.StudentList.FirstOrDefault(Student => Student.Id == StudentEdit.Id);
+            Student? student = _dbContext.Students.FirstOrDefault(Student => Student.Id == StudentEdit.Id);
 
             if (student != null)
             {
@@ -149,13 +163,14 @@ namespace SetupYourProject_Filomeno.Controllers
                 student.Email = StudentEdit.Email;
                 student.GPA = StudentEdit.GPA;
             }
+            _dbContext.SaveChanges();
             return RedirectToAction("Student");
         }
 
         [HttpGet]
         public IActionResult DeleteStudent(int id)
         {
-            Student? student = _fakeData.StudentList.FirstOrDefault(Instructor => Instructor.Id == id);
+            Student? student = _dbContext.Students.FirstOrDefault(Instructor => Instructor.Id == id);
             if (student != null)
             {
                 return View(student);
@@ -169,8 +184,9 @@ namespace SetupYourProject_Filomeno.Controllers
         [HttpPost]
         public IActionResult DeleteStudent(Student delStudent)
         {
-            Student? student = _fakeData.StudentList.FirstOrDefault(Student => Student.Id == delStudent.Id);
-            _fakeData.StudentList.Remove(student);
+            Student? student = _dbContext.Students.FirstOrDefault(Student => Student.Id == delStudent.Id);
+            _dbContext.Students.Remove(student);
+            _dbContext.SaveChanges();
             return RedirectToAction("Student");
         }
 

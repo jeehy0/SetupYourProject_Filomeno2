@@ -6,11 +6,10 @@
 
     <table class="table table-danger">
         <tr>
-            <th colspan="9">Student</th>
+            <th colspan="8">Student</th>
         </tr>
 
         <tr>
-            <td>Id</td>
             <td>Name</td>
             <td>Course</td>
             <td>Admission Date</td>
@@ -24,7 +23,6 @@
     @foreach (var student in Model)
     {
         <tr>
-            <td>@student.Id</td>
             <td>@student.FirstName @student.LastName</td>
             <td>@student.Course</td>
             <td>@student.AdmissionDate</td>

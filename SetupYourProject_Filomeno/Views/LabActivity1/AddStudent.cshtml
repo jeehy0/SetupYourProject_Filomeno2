@@ -2,41 +2,53 @@
 
 <p>Add Student</p>
 
+<style>
+    span {
+        color: red;
+    }
+</style>
+
 <form asp-action="AddStudent" method="post">
-    <div class="form-group">
+    @* <div class="form-group">
         <label asp-for="Id">ID</label>
         <input asp-for="Id" class="form-control" />
-    </div>
+    </div> *@
 
     <div class="form-group">
         <label asp-for="FirstName">First Name</label>
         <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName"> </span>
     </div>
 
     <div class="form-group">
         <label asp-for="LastName">Last Name</label>
         <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName"> </span>
     </div>
 
     <div class="form-group">
-        <label asp-for="Course">Rank</label>
+        <label asp-for="Course">Course</label>
         <select asp-for="Course" asp-items="Html.GetEnumSelectList(typeof(Course))" class="form-control"></select>
+        <span asp-validation-for="Course"> </span>
     </div>
 
 
     <div class="form-group">
         <label asp-for="AdmissionDate">Admission Date</label>
         <input asp-for="AdmissionDate" class="form-control" />
+        <span asp-validation-for="AdmissionDate"> </span>
     </div>
 
     <div class="form-group">
         <label asp-for="Email">Email</label>
         <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email"> </span>
     </div>
 
     <div class="form-group">
         <label asp-for="GPA">GPA</label>
         <input asp-for="GPA" class="form-control" />
+        <span asp-validation-for="GPA"> </span>
     </div>
 
     <br />

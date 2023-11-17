@@ -1,0 +1,27 @@
+﻿@using SetupYourProject_Filomeno.Models
+
+@model LoginViewModel
+
+<h1>Register a new account</h1>
+<form asp-action="Register">
+    <div class="form-group" asp-validation-summary="All"></div>
+    <div class="form-group">
+        <label asp-for="UserName"></label>
+        <input asp-for="UserName">
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password">
+    </div>
+
+    <div class="form-group">
+        <label asp-for="RememberMe">Remember Me</label>
+        <select asp-for="RememberMe" class="form-control">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select>
+    </div>
+
+    <input type="submit" value="Login" class="btn btn-primary" />
+
+</form>
